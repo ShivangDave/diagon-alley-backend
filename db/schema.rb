@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_20_044259) do
+ActiveRecord::Schema.define(version: 2021_04_20_212749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_v1_addresses", force: :cascade do |t|
+    t.string "street_address"
+    t.string "apartment_no"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "api_v1_items", force: :cascade do |t|
     t.string "name"
@@ -21,6 +31,16 @@ ActiveRecord::Schema.define(version: 2021_04_20_044259) do
     t.integer "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "api_v1_user_addresses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "address_id"
+    t.string "type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["address_id"], name: "index_api_v1_user_addresses_on_address_id"
+    t.index ["user_id"], name: "index_api_v1_user_addresses_on_user_id"
   end
 
   create_table "api_v1_users", force: :cascade do |t|
