@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2021_04_20_212749) do
   create_table "api_v1_user_addresses", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "address_id"
-    t.string "type"
+    t.string "address_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["address_id"], name: "index_api_v1_user_addresses_on_address_id"
