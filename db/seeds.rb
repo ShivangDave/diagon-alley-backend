@@ -3,6 +3,8 @@ Api::V1::User.destroy_all
 Api::V1::Address.destroy_all
 Api::V1::UserAddress.destroy_all
 Api::V1::Item.destroy_all
+Api::V1::Cart.destroy_all
+Api::V1::CartItem.destroy_all
 
 u1 = Api::V1::User.create(
   first_name: 'Shivang',
@@ -47,3 +49,12 @@ ua2 = Api::V1::UserAddress.create(
     price: Faker::Number.decimal(l_digits: 2)
   )
 end
+
+cart1 = Api::V1::Cart.create(
+  user_id: u1.id
+)
+
+cart_items1 = Api::V1::CartItem.create(
+  cart_id: cart1.id,
+  item_id: Api::V1::Item.all.sample.id
+)

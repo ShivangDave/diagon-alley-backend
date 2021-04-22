@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_20_212749) do
+ActiveRecord::Schema.define(version: 2021_04_22_021411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,12 +25,49 @@ ActiveRecord::Schema.define(version: 2021_04_20_212749) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "api_v1_cart_items", force: :cascade do |t|
+    t.bigint "cart_id"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cart_id"], name: "index_api_v1_cart_items_on_cart_id"
+    t.index ["item_id"], name: "index_api_v1_cart_items_on_item_id"
+  end
+
+  create_table "api_v1_carts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_api_v1_carts_on_user_id"
+  end
+
   create_table "api_v1_items", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.integer "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "api_v1_order_items", force: :cascade do |t|
+    t.bigint "order_id"
+    t.bigint "item_id"
+    t.text "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_api_v1_order_items_on_item_id"
+    t.index ["order_id"], name: "index_api_v1_order_items_on_order_id"
+  end
+
+  create_table "api_v1_orders", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "shipping_address_id"
+    t.bigint "billing_address_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["billing_address_id"], name: "index_api_v1_orders_on_billing_address_id"
+    t.index ["shipping_address_id"], name: "index_api_v1_orders_on_shipping_address_id"
+    t.index ["user_id"], name: "index_api_v1_orders_on_user_id"
   end
 
   create_table "api_v1_user_addresses", force: :cascade do |t|
@@ -53,4 +90,6 @@ ActiveRecord::Schema.define(version: 2021_04_20_212749) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "api_v1_orders", "api_v1_addresses", column: "billing_address_id"
+  add_foreign_key "api_v1_orders", "api_v1_addresses", column: "shipping_address_id"
 end
