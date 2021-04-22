@@ -1,7 +1,39 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Api::V1::User.destroy_all
+Api::V1::Address.destroy_all
+Api::V1::UserAddress.destroy_all
+
+u1 = Api::V1::User.create(
+  first_name: 'Shivang',
+  last_name: 'Dave',
+  email: 'mail@shivangdave.com',
+  password: '1234',
+  agreement: true
+)
+
+a1 = Api::V1::Address.create(
+  street_address: 'Some street',
+  apartment_no: 'Some apt',
+  city: 'Stafford',
+  state: 'TX',
+  zip_code: '77477'
+)
+
+a2 = Api::V1::Address.create(
+  street_address: 'Some St',
+  apartment_no: 'Some 404',
+  city: 'Houston',
+  state: 'TX',
+  zip_code: '77054'
+)
+
+ua1 = Api::V1::UserAddress.create(
+  user_id: u1.id,
+  address_id: a1.id,
+  address_type: 'shipping'
+)
+
+ua2 = Api::V1::UserAddress.create(
+  user_id: u1.id,
+  address_id: a2.id,
+  address_type: 'billing'
+)
