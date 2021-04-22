@@ -1,6 +1,8 @@
+# require 'faker'
 Api::V1::User.destroy_all
 Api::V1::Address.destroy_all
 Api::V1::UserAddress.destroy_all
+Api::V1::Item.destroy_all
 
 u1 = Api::V1::User.create(
   first_name: 'Shivang',
@@ -37,3 +39,11 @@ ua2 = Api::V1::UserAddress.create(
   address_id: a2.id,
   address_type: 'billing'
 )
+
+(1..10).each do |i|
+  Api::V1::Item.create(
+    name: Faker::Book.title,
+    description: Faker::Book.publisher,
+    price: Faker::Number.decimal(l_digits: 2)
+  )
+end
