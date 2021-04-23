@@ -5,10 +5,11 @@ class Api::V1::AuthController < ApplicationController
 
     if @user && @user.authenticate(users_params[:password])
       render :json => Api::V1::UserSerializer.new(
-        @user,include: [:user_addresses]
+        @user
+        # ,include: [:user_addresses]
       ).serializable_hash, :status => :ok
     else
-      render :json => { "error" => "Login failure.." }, :status => :ok
+      render :json => { "error" => "Login failure.." }, :status => :not_found
     end
   end
 
