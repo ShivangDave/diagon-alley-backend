@@ -5,6 +5,7 @@ Api::V1::UserAddress.destroy_all
 Api::V1::Item.destroy_all
 Api::V1::Cart.destroy_all
 Api::V1::CartItem.destroy_all
+Api::V1::ItemImage.destroy_all
 
 u1 = Api::V1::User.create(
   first_name: 'Shivang',
@@ -43,11 +44,18 @@ ua2 = Api::V1::UserAddress.create(
 )
 
 (1..10).each do |i|
-  Api::V1::Item.create(
+  @item = Api::V1::Item.create(
     name: Faker::Book.title,
     description: Faker::Book.publisher,
     price: Faker::Number.decimal(l_digits: 2)
   )
+  (1..3).each do |x|
+    @item.item_images.build(
+      item_id: @item.id,
+      img_url: Faker::Avatar.image
+    )
+    @item.save
+  end
 end
 
 cart1 = Api::V1::Cart.create(
