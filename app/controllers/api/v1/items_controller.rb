@@ -1,6 +1,6 @@
 class Api::V1::ItemsController < ApplicationController
 
-  # before_action :authorized
+  before_action :authorized, only: [:destroy]
   before_action :find_item, only: [:show]
 
   def index
@@ -15,6 +15,7 @@ class Api::V1::ItemsController < ApplicationController
       render :json => { "error": "Item not found.." }, :status => :not_found
     end
   end
+
 
   private
   def find_item

@@ -1,6 +1,6 @@
 class Api::V1::CartsController < ApplicationController
 
-  before_action :authorized, only: [:create]
+  before_action :authorized, only: [:index,:create]
 
   def index
     @cart_items = current_user.cart.items
@@ -10,6 +10,12 @@ class Api::V1::CartsController < ApplicationController
   def create
     @cart_items = current_user.cart.add_item(cart_params[:id])
     render :json => @cart_items, :status => :ok
+  end
+
+  def destroy
+    @items = current_user.cart_items.where(item_id: params[:id])
+    @items.each { |i| i.destroy }
+    render :json => { "msg": "Deleted.." }, :status => :ok
   end
 
   private
