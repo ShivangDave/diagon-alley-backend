@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :addresses, only: []
       resources :items, only: [:index, :show]
       resources :users, only: []
-      resources :carts, only: [:index,:create,:destroy]
+      resources :carts, only: [:index,:create,:update,:destroy]
 
       post '/login', to: 'auth#create'
       post '/signup', to: 'users#create'
