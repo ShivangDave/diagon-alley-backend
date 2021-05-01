@@ -8,7 +8,21 @@ class Api::V1::CartsController < ApplicationController
     else
       @cart_items = []
     end
-    render :json => @cart_items, include: [:item_images], :status => :ok
+
+    @billing = current_user.user_addresses.find_by(address_type: 'billing')
+    @shipping = current_user.user_addresses.find_by(address_type: 'shipping')
+
+    render :json => {
+      :items => @cart_items.as_json(include: [:item_images]),
+      :addresses => [{
+          :billing => @billing.address.as_json(
+            except: [:created_at,:updated_at]
+          ),
+          :shipping => @shipping.address.as_json(
+            except: [:created_at,:updated_at]
+          )
+      }]
+    }, :status => :ok
   end
 
   def create
