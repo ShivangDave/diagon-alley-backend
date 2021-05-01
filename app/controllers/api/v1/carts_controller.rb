@@ -3,11 +3,18 @@ class Api::V1::CartsController < ApplicationController
   before_action :authorized, only: [:index,:create]
 
   def index
-    @cart_items = current_user.cart.items
+    if current_user.cart
+      @cart_items = current_user.cart.items
+    else
+      @cart_items = []
+    end
     render :json => @cart_items, include: [:item_images], :status => :ok
   end
 
   def create
+    if !current_user.cart
+      @cart = Api::V1::Cart.create(user_id: current_user.id)
+    end
     @cart_items = current_user.cart.add_item(cart_params[:id])
     render :json => @cart_items, :status => :ok
   end
