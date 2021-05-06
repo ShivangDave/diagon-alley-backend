@@ -1,5 +1,19 @@
 class Api::V1::OrdersController < ApplicationController
 
+  def index
+    @orders = current_user.orders
+    render :json => @orders.to_json(
+      include: {
+        items: {
+          include: [
+            :item_images
+          ],
+          except: [ :created_at, :updated_at ]
+        }
+      }
+    )
+  end
+
   def create
     @billing = current_user.user_addresses.find_by(address_type: 'billing')
     @shipping = current_user.user_addresses.find_by(address_type: 'shipping')
