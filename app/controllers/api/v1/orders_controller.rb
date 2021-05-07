@@ -43,4 +43,10 @@ class Api::V1::OrdersController < ApplicationController
     end
   end
 
+  def destroy
+    @order = Api::V1::Order.find_by(id: params[:id])
+    @order.destroy
+    render :json => @order
+  end
+
 end
