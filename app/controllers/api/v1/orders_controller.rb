@@ -1,5 +1,7 @@
 class Api::V1::OrdersController < ApplicationController
 
+  before_action :find_order, only: [:show, :destroy]
+
   def index
     @orders = current_user.orders
     render :json => @orders.to_json(
@@ -43,10 +45,31 @@ class Api::V1::OrdersController < ApplicationController
     end
   end
 
+  def show
+    if @order
+      render :json => @order.to_json(
+        include: {
+          items: {
+            include: [
+              :item_images
+            ],
+            except: [ :created_at, :updated_at ]
+          }
+        }
+      ), :status => :ok
+    else
+      render :json => { "error": "Item not found.." }, :status => :not_found
+    end
+  end
+
   def destroy
-    @order = Api::V1::Order.find_by(id: params[:id])
     @order.destroy
     render :json => @order
+  end
+
+  private
+  def find_order
+    @order = Api::V1::Order.find_by(id: params[:id])
   end
 
 end
